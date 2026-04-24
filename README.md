@@ -64,14 +64,17 @@ flutter build web --release --dart-define=API_BASE_URL=https://api.example.com/a
 
 ### AWS Amplify Deployment (Monorepo)
 
-This project is configured for AWS Amplify using the root `amplify.yml`. Each frontend app can be connected as a separate Amplify App:
+Each frontend app in this monorepo has its own `amplify.yml` for simplified deployment:
 
-1. Connect your repository to AWS Amplify.
-2. When prompted for monorepo settings, choose the specific app directory (e.g., `frontend_customer_flutter`).
-3. Amplify will automatically detect the build settings from the root `amplify.yml` for that `appRoot`.
-4. Ensure you set the following **Environment Variables** in the Amplify Console for each app:
-   - `API_BASE_URL`: The URL of your backend API.
-   - `SOCKET_URL`: The URL of your backend Socket.IO server.
+1. In the **AWS Amplify Console**, click "New App" > "Host web app".
+2. Connect your GitHub repository.
+3. **Monorepo Settings**: When prompted, check the box "Connecting a monorepo?" and enter the path to the app you want to deploy (e.g., `frontend_customer_flutter`).
+4. Amplify will automatically pick up the `amplify.yml` located *inside* that directory.
+5. **Environment Variables**: In the Amplify Console for each app, go to "App settings" > "Environment variables" and add:
+   - `API_BASE_URL`: e.g., `https://api.yourdomain.com/api`
+   - `SOCKET_URL`: e.g., `https://api.yourdomain.com`
+
+Amplify will now handle the Flutter installation and web build automatically on every push.
 
 Upload each app's `build/web` directory to its own S3 bucket or prefix and serve through CloudFront. Configure CloudFront custom error responses so SPA routes return `index.html`.
 
