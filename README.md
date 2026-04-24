@@ -62,6 +62,17 @@ Customer QR URLs use this shape:
 flutter build web --release --dart-define=API_BASE_URL=https://api.example.com/api --dart-define=SOCKET_URL=https://api.example.com
 ```
 
+### AWS Amplify Deployment (Monorepo)
+
+This project is configured for AWS Amplify using the root `amplify.yml`. Each frontend app can be connected as a separate Amplify App:
+
+1. Connect your repository to AWS Amplify.
+2. When prompted for monorepo settings, choose the specific app directory (e.g., `frontend_customer_flutter`).
+3. Amplify will automatically detect the build settings from the root `amplify.yml` for that `appRoot`.
+4. Ensure you set the following **Environment Variables** in the Amplify Console for each app:
+   - `API_BASE_URL`: The URL of your backend API.
+   - `SOCKET_URL`: The URL of your backend Socket.IO server.
+
 Upload each app's `build/web` directory to its own S3 bucket or prefix and serve through CloudFront. Configure CloudFront custom error responses so SPA routes return `index.html`.
 
 ## Core API
